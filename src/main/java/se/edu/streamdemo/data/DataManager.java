@@ -46,6 +46,7 @@ public class DataManager {
             System.out.println("empty file");
             throw new IOException();
         }
+        //List is the super class, downcasting to the ArrayList
         ArrayList<String> dataItems = (ArrayList) Files.readAllLines(dataFile.toPath(), Charset.defaultCharset());
 
         return dataItems;
@@ -89,7 +90,7 @@ public class DataManager {
     }
 
     private static String getTaskType(String inputLine) {
-        String taskType = inputLine.substring(0, 2);
+        String taskType = inputLine.substring(0, 2); //[E]
         taskType = taskType.replace("[", "");
         taskType = taskType.replace("]", "");
         return taskType;
