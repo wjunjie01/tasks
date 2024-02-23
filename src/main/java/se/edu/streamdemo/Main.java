@@ -4,8 +4,9 @@ import se.edu.streamdemo.data.DataManager;
 import se.edu.streamdemo.task.Deadline;
 import se.edu.streamdemo.task.Task;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import static java.util.stream.Collectors.toList;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,13 +20,20 @@ public class Main {
         printAllData(tasksData);
         printAllDataUsingStream(tasksData);
 
-        System.out.println("Printing deadlines ...");
+        System.out.println("Printing deadlines ... (before sorting)");
         printDeadlines(tasksData);
         printDeadlinesUsingStream(tasksData);
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+        System.out.println("Printing deadlines ... (after sorting)");
+        printDeadlinesUsingStream(tasksData);
+
+        ArrayList<Task> filteredList = filterByString(tasksData, "11"); //Filter all tasks with string 11 inside
+        printAllData(filteredList);
+
         System.out.println("Total number of deadlines using stream: "
                 + countDeadlinesUsingStream(tasksData));
+
     }
 
     private static int countDeadlines(ArrayList<Task> tasksData) {
@@ -68,10 +76,17 @@ public class Main {
     }
 
     public static void printDeadlinesUsingStream(ArrayList<Task> tasks) {
-        System.out.println("Printing deadlines using streams... ");
         tasks.stream()
-                .filter((t) -> t instanceof Deadline)
-                .forEach(System.out::println);
+                .filter((t) -> t instanceof Deadline) //creates a stream again and again
+                .sorted((t1, t2) -> t1.getDescription().compareToIgnoreCase(t2.getDescription()))
+                .forEach(System.out::println); //until it reaches the end
     }
 
+    public static ArrayList<Task> filterByString(ArrayList<Task> tasks, String filterString) {
+        ArrayList<Task> filteredList = (ArrayList<Task>) tasks.stream()
+                .filter((t) -> t.getDescription().contains(filterString))
+                .collect(toList());
+
+        return filteredList;
+    }
 }
