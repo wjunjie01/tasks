@@ -11,17 +11,20 @@ public class Main {
         System.out.println("Welcome to Task (stream) manager");
         //relative path, ./ means with respective to the current folder, java is able to resolve the / -> \ to the local
         DataManager dataManager = new DataManager("./data/data.txt");
-        // C:\users\Jun Jie <<< absolute path - may not access by others
+        // C:/users\Jun Jie <<< absolute path - may not access by others
         ArrayList<Task> tasksData = dataManager.loadData();
 
         System.out.println("Printing all data ...");
         printAllData(tasksData);
+        printAllDataUsingStream(tasksData);
 
         System.out.println("Printing deadlines ...");
         printDeadlines(tasksData);
+        printDeadlinesUsingStream(tasksData);
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
-
+        System.out.println("Total number of deadlines using stream: "
+                + countDeadlinesUsingStream(tasksData));
     }
 
     private static int countDeadlines(ArrayList<Task> tasksData) {
